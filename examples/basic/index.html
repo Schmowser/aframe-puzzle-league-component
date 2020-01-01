@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>A-Frame Puzzle League Component - Basic</title>
+    <meta name="description" content="Basic example for Puzzle League component."></meta>
+<!--    <script src="../../dist/aframe-puzzle-league-component.min.js"></script>-->
+    <script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script>
+    <script src="../../src/setup.js"></script>
+  </head>
+  <body>
+  <a-scene setup>
+    <a-assets>
+      <img
+              id="waterTexture"
+              src="https://cdn.glitch.com/1f29b7cb-3b5c-4853-9cc7-a456e6204b1b%2Fsea-ocean-water-texture.jpg?v=1577543850982"
+      />
+      <img
+              id="skyTexture"
+              src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg"
+      />
+    </a-assets>
+
+    <a-plane
+            src="#waterTexture"
+            position="0 0 -1.6"
+            rotation="-90 -45 0"
+            width="8"
+            height="8"
+            shadow
+    ></a-plane>
+
+    <a-sky src="#skyTexture"></a-sky>
+  </a-scene>
+  </body>
+</html>
+
