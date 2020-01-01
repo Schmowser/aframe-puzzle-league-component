@@ -1,8 +1,5 @@
 ## aframe-puzzle-league-component
 
-'[![Version](http://img.shields.io/npm/v/aframe-puzzle-league-component.svg?style=flat-square)](https://npmjs.org/package/aframe-puzzle-league-component)
-[![License](http://img.shields.io/npm/l/aframe-puzzle-league-component.svg?style=flat-square)](https://npmjs.org/package/aframe-puzzle-league-component)'
-
 A Puzzle League component for A-Frame.
 
 For [A-Frame](https://aframe.io).
