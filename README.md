@@ -1,7 +1,7 @@
 ## aframe-puzzle-league-component
 
-[![Version](http://img.shields.io/npm/v/aframe-puzzle-league-component.svg?style=flat-square)](https://npmjs.org/package/aframe-puzzle-league-component)
-[![License](http://img.shields.io/npm/l/aframe-puzzle-league-component.svg?style=flat-square)](https://npmjs.org/package/aframe-puzzle-league-component)
+'[![Version](http://img.shields.io/npm/v/aframe-puzzle-league-component.svg?style=flat-square)](https://npmjs.org/package/aframe-puzzle-league-component)
+[![License](http://img.shields.io/npm/l/aframe-puzzle-league-component.svg?style=flat-square)](https://npmjs.org/package/aframe-puzzle-league-component)'
 
 A Puzzle League component for A-Frame.
 
@@ -48,7 +48,15 @@ require('aframe');
 require('aframe-puzzle-league-component');
 ```
 
-### Running tests
+### Run locally
+
+```bash
+npm run start
+```
+
+Open `localhost:5000`!
+
+### Run tests
 
 Currently runs sample tests in Google Chrome and Mozilla Firefox
 
