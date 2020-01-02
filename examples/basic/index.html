@@ -6,10 +6,19 @@
     <meta name="description" content="Basic example for Puzzle League component."></meta>
 <!--    <script src="../../dist/aframe-puzzle-league-component.min.js"></script>-->
     <script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-physics-system/v4.0.1/dist/aframe-physics-system.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
     <script src="../../src/setup.js"></script>
   </head>
   <body>
-  <a-scene setup>
+  <a-scene setup physics="debug: true">
+    <a-camera>
+<!--      <a-cursor></a-cursor>-->
+    </a-camera>
+
+    <a-entity laser-controls raycaster="objects: .links; far: 5"></a-entity>
+    <a-entity laser-controls raycaster="objects: .links; far: 5"></a-entity>
+
     <a-assets>
       <img
               id="waterTexture"
@@ -28,6 +37,8 @@
             width="8"
             height="8"
             shadow
+            static-body
+            click-drag
     ></a-plane>
 
     <a-sky src="#skyTexture"></a-sky>
