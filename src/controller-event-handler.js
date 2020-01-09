@@ -5,18 +5,24 @@ AFRAME.registerComponent('controller-event-handler', {
           var el = this.el;
 
           el.addEventListener('mouseenter', function () {
-                console.log('Mouse entered!');
                 el.setAttribute('material', 'color', '#24CAFF');
           });
           el.addEventListener('mouseleave', function () {
-                console.log("Mouse left!");
                 el.setAttribute('material', 'color', '#EF2D5E');
           });
           el.addEventListener('mousedown', function () {
-                console.log('A mouse down!');
-                let thisPosition = el.object3D.position;
-                el.setAttribute('animation', `property: position; to: ${thisPosition.x} ${thisPosition.y - 2} ${thisPosition.z}; dir: alternate; loop: true`);
-          })
+                el.setAttribute('id', 'toBeSwapped')
+          });
+          el.addEventListener('mouseup', function () {
+                const al = document.querySelector('#toBeSwapped');
+                el.setAttribute('swappable', { 'target': al } );
+                al.removeAttribute('id');
+                el.removeAttribute('swappable');
+          });
+          el.addEventListener('animationcomplete', function(event) {
+                console.log('Animation ended!')
+                console.log(event)
+          });
     }
 
 });
