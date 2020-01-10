@@ -35,8 +35,16 @@
     </a-assets>
 
     <!-- Hands -->
-    <a-entity id="left" oculus-touch-controls="hand: left" controller-cursor></a-entity>
-    <a-entity id="right" oculus-touch-controls="hand: right" controller-cursor></a-entity>
+    <a-entity id="left"
+              oculus-touch-controls="hand: left"
+              controller-cursor
+    ></a-entity>
+    <a-entity id="right"
+              oculus-touch-controls="hand: right"
+              controller-cursor
+              animation="property: position; to: 0 1.5 1"
+              animation__2="property: rotation; to: 0 -45 0; loop: true; dir: alternate"
+    ></a-entity>
 
     <!-- Ground -->
     <a-plane
