@@ -15,9 +15,9 @@ AFRAME.registerComponent('controller-event-handler', {
           });
           el.addEventListener('mouseup', function () {
                 const al = document.querySelector('#toBeSwapped');
-                el.setAttribute('swappable', { 'target': al } );
+                al.setAttribute('swappable', { 'target': el } );
                 al.removeAttribute('id');
-                el.removeAttribute('swappable');
+                al.removeAttribute('swappable');
           });
           el.addEventListener('animationcomplete', function(event) {
                 console.log('Animation ended!')
