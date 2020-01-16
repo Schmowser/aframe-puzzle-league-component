@@ -20,6 +20,9 @@ module.exports = function (config) {
     ],
     frameworks: ['mocha', 'sinon-chai', 'chai-shallow-deep-equal', 'browserify'],
     preprocessors: {'tests/**/*.js': ['browserify', 'env']},
-    reporters: ['mocha']
+    reporters: ['mocha'],
+    browserConsoleLogOptions: {
+      level: 'log'
+    },
   });
 };
