@@ -11,8 +11,9 @@
     <script src="https://unpkg.com/aframe-controller-cursor-component@0.2.3/dist/aframe-controller-cursor-component.min.js"></script>
     <script src="../../src/setup.js"></script>
     <script src="../../src/controller-event-handler.js"></script>
-    <script src="../../mockups/mock-mouse.js"></script>
     <script src="../../src/swappable.js"></script>
+    <script src="../../src/grid.js"></script>
+    <script src="../../mockups/mock-mouse.js"></script>
   </head>
   <body>
   <a-scene>
@@ -60,10 +61,18 @@
             click-drag
     ></a-plane>
 
-    <a-entity id="cubes" position="0 0 -1.0">
-      <a-entity mixin="cube" position="0.5 1.5 0"></a-entity>
-      <a-entity mixin="cube" position="0 1.5 0"></a-entity>
-      <a-entity mixin="cube" position="-0.5 1.5 0"></a-entity>
+    <a-entity id="grid" position="-1 1.5 -2.0" grid>
+      <a-entity mixin="cube" position="0 0 0" id="00"></a-entity>
+      <a-entity mixin="cube" position="0.5 0 0" id="01"></a-entity>
+      <a-entity mixin="cube" position="1 0 0" material="color: #24CAFF" id="02"></a-entity>
+      <a-entity mixin="cube" position="1.5 0 0" id="03"></a-entity>
+      <a-entity mixin="cube" position="2 0 0" id="04"></a-entity>
+
+      <a-entity mixin="cube" position="0 0.5 0" id="10"></a-entity>
+      <a-entity mixin="cube" position="0.5 0.5 0" material="color: #34B51D" id="11"></a-entity>
+      <a-entity mixin="cube" position="1 0.5 0" id="12"></a-entity>
+      <a-entity mixin="cube" position="1.5 0.5 0" material="color: #34B51D" id="13"></a-entity>
+      <a-entity mixin="cube" position="2 0.5 0" id="14"></a-entity>
     </a-entity>
 
     <a-sky src="#skyTexture"></a-sky>

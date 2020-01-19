@@ -5,17 +5,16 @@ AFRAME.registerComponent('mock-mouse', {
           var el = this.el;
 
           el.addEventListener('mouseenter', function () {
-                console.log('Mouse entered!');
                 var position = el.object3D.position;
-                if (position.x === 0) {
+                if (position.x === 1) {
                     el.emit('mousedown');
                 } else {
                     el.emit('mouseup');
                 }
           });
-          el.addEventListener('mouseleave', function () {
-                console.log('Mouse left!')
-          });
+//          el.addEventListener('mouseleave', function () {
+//                console.log('Mouse left!')
+//          });
 //          el.addEventListener('mousedown', function () {
 //                el.setAttribute('id', 'toBeSwapped')
 //          });
