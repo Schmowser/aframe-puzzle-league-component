@@ -11,13 +11,14 @@ AFRAME.registerComponent('controller-event-handler', {
 //                el.setAttribute('material', 'color', '#EF2D5E');
           });
           el.addEventListener('mousedown', function () {
-                el.setAttribute('id', 'toBeSwapped')
+                el.setAttribute('swap-candidate');
           });
           el.addEventListener('mouseup', function () {
-                const al = document.querySelector('#toBeSwapped');
-                if (al) {
+                const swapCandidates = document.querySelectorAll("[swap-candidate]");
+                if (swapCandidates && swapCandidates[0]) {
+                    const al = swapCandidates[0];
                     al.setAttribute('swappable', { 'target': el } );
-                    al.removeAttribute('id');
+                    al.removeAttribute('swap-candidate');
                     al.removeAttribute('swappable');
                 }
           });
@@ -26,6 +27,8 @@ AFRAME.registerComponent('controller-event-handler', {
                 const idx = '' + (elPosition.x/0.5);
                 const idy = '' + (elPosition.y/0.5);
                 el.setAttribute('id', idy.concat(idx))
+
+                el.emit('checkForMatch');
           });
     }
 
