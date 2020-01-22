@@ -17,9 +17,4 @@ suite('puzzle-league component', function () {
     el.setAttribute('puzzle-league', {});
   });
 
-  suite('1', function () {
-    test('equals 1', function () {
-      assert.equal(1, 1);
-    });
-  });
 });

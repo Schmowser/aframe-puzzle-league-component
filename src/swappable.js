@@ -4,7 +4,7 @@ AFRAME.registerComponent('swappable', {
     },
 
     init: function () {
-        var el = this.el;
+        const el = this.el;
         const elPosition = el.object3D.position;
         const targetPosition = this.data.target.object3D.position;
 
