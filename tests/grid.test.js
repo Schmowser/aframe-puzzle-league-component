@@ -1,19 +1,19 @@
 /* global assert, setup, suite, test */
 require('aframe');
 require('../src/grid.js');
-var entityFactory = require('./helpers').entityFactory;
-var chai = require('chai');
+const entityFactory = require('./helpers').entityFactory;
+const chai = require('chai');
 chai.use(require('chai-dom'));
-var expect = chai.expect
-var should = chai.should();
+const expect = chai.expect;
+const should = chai.should();
 
 const colors = ['#EF2D5E', '#4CC3D9', '#FFC65D', '#34B51D'];
 
 suite('grid component, blocks', function () {
 
   suite('R|R|R (horizontal)', function () {
-    var component;
-    var el;
+    let component;
+    let el;
 
     setup(function (done) {
       el = entityFactory();
@@ -49,8 +49,8 @@ suite('grid component, blocks', function () {
   });
 
   suite('R|R|R|R', function () {
-    var component;
-    var el;
+    let component;
+    let el;
 
     setup(function (done) {
       el = entityFactory();
@@ -90,8 +90,8 @@ suite('grid component, blocks', function () {
   });
 
   suite('R\n    R\n    R|R|R', function () {
-    var component;
-    var el;
+    let component;
+    let el;
 
     setup(function (done) {
       el = entityFactory();
@@ -135,8 +135,8 @@ suite('grid component, blocks', function () {
   });
 
   suite('R|R|R\n    0|0|0', function () {
-    var component;
-    var el;
+    let component;
+    let el;
 
     setup(function (done) {
       el = entityFactory();
@@ -172,8 +172,8 @@ suite('grid component, blocks', function () {
   });
 
   suite('0|R|0\n    R|R|R\n    0|R|0', function () {
-    var component;
-    var el;
+    let component;
+    let el;
 
     setup(function (done) {
       el = entityFactory();
@@ -217,8 +217,8 @@ suite('grid component, blocks', function () {
   });
 
   suite('R\n    R\n    R', function () {
-    var component;
-    var el;
+    let component;
+    let el;
 
     setup(function (done) {
       el = entityFactory();
@@ -254,8 +254,8 @@ suite('grid component, blocks', function () {
   });
 
   suite('R\n    R\n    R\n    R', function () {
-    var component;
-    var el;
+    let component;
+    let el;
 
     setup(function (done) {
       el = entityFactory();
@@ -295,8 +295,8 @@ suite('grid component, blocks', function () {
   });
 
   suite('R\n    R\n    R\n    R\n    R', function () {
-    var component;
-    var el;
+    let component;
+    let el;
 
     setup(function (done) {
       el = entityFactory();
@@ -340,8 +340,8 @@ suite('grid component, blocks', function () {
   });
 
   suite('R|B|R', function () {
-    var component;
-    var el;
+    let component;
+    let el;
 
     setup(function (done) {
       el = entityFactory();
@@ -378,8 +378,8 @@ suite('grid component, blocks', function () {
   });
 
   suite('R|0|R', function () {
-    var component;
-    var el;
+    let component;
+    let el;
 
     setup(function (done) {
       el = entityFactory();
@@ -412,8 +412,8 @@ suite('grid component, blocks', function () {
   });
 
   suite('R|\n    R|R|B|R|R', function () {
-    var component;
-    var el;
+    let component;
+    let el;
 
     setup(function (done) {
       el = entityFactory();
