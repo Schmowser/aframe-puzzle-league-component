@@ -5,28 +5,66 @@ AFRAME.registerComponent('grid', {
 
         const el = this.el;
         el.addEventListener('checkForMatch', function () {
-            let nodesToBeRemoved = [];
+            let nodesToBeRemoved = new Set();
             let currentColor = null;
-            for (let j = 0; j < 5; j++) {
-                    const node = document.getElementById('0' + j);
+
+            // Check for all matches in each row
+            let rowMatchNodes = new Set();
+            for (let i = 0; i < 5; i++) {
+                const iString = '' + i;
+                for (let j = 0; j < 5; j++) { // TODO: Generalize 5
+                    const node = document.getElementById(iString + j);
                     if (node != null) {
                         const nodeColor = node.getAttribute('material').color;
 
-                        if (nodeColor === currentColor) {
-                            nodesToBeRemoved.push(node);
+                        if (node.getAttribute('visible') && nodeColor === currentColor) {
+                            rowMatchNodes.add(node);
                         } else {
-                            nodesToBeRemoved = [node];
+                            rowMatchNodes = new Set([node]);
                             currentColor = nodeColor;
                         }
 
-                        if (nodesToBeRemoved.length > 2) {
-                            nodesToBeRemoved.forEach(node => node.parentNode.removeChild(node));
+                        if (rowMatchNodes.size > 2) {
+                            rowMatchNodes.forEach(node => nodesToBeRemoved.add(node));
                         }
                     } else {
-                        nodesToBeRemoved = [];
+                        rowMatchNodes.clear();
                         currentColor = null;
                     }
+                }
+                rowMatchNodes.clear();
             }
+
+            // Check for all matches in each column
+            let colMatchNodes = new Set();
+            for (let j = 0; j < 5; j++) {
+                for (let i = 0; i < 5; i++) { // TODO: Generalize 5
+                    const iString = '' + i;
+                    const node = document.getElementById(iString + j);
+                    if (node != null) {
+                        const nodeColor = node.getAttribute('material').color;
+
+                        if (node.getAttribute('visible') && nodeColor === currentColor) {
+                            colMatchNodes.add(node);
+                        } else {
+                            colMatchNodes = new Set([node]);
+                            currentColor = nodeColor;
+                        }
+
+                        if (colMatchNodes.size > 2) {
+                            colMatchNodes.forEach(node => nodesToBeRemoved.add(node));
+                        }
+                    } else {
+                        colMatchNodes.clear();
+                        currentColor = null;
+                    }
+                }
+                colMatchNodes.clear();
+            }
+
+            // Remove all nodes
+            nodesToBeRemoved.forEach(node => node.parentNode.removeChild(node));
+            // nodesToBeRemoved.forEach(node => node.setAttribute('visible', false));
         });
 
         el.emit('checkForMatch');
