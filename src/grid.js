@@ -65,6 +65,7 @@ function buildId(i, j) {
 
 function applyGravityAfterBlockRemoval(nodesRemoved) {
     let cubeNodes = document.querySelectorAll("[mixin='cube']");
+    console.log(idToPositionMapper('12'));
     cubeNodes.forEach(block => {
         const row = block.id[0];
         const col = block.id[1];
@@ -74,12 +75,22 @@ function applyGravityAfterBlockRemoval(nodesRemoved) {
             .length;
         if (drop) {
             const blockPosition = block.getAttribute('position');
+            const fallDuration = 400 * Math.sqrt(drop);
             block.setAttribute('animation', `
                         property: position;
                         to: ${blockPosition.x} ${blockPosition.y - drop * 0.5} ${blockPosition.z};
                         easing: easeInSine;
-                        dur: 500;
+                        dur: ${fallDuration};
                     `);
         } // TODO: Use id and drop to determine to-position (Write an id to relativePosition mapper)
     });
+}
+
+function idToPositionMapper(id) {
+    const interSpace = 0.5;
+    let position = {};
+    position.x = id[1] * interSpace;
+    position.y = id[0] * interSpace;
+    position.z = 0;
+    return position
 }
