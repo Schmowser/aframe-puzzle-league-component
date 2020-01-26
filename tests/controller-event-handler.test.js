@@ -1,10 +1,10 @@
 /* global assert, setup, suite, test */
 require('aframe');
 require('../src/controller-event-handler.js');
-var entityFactory = require('./helpers').entityFactory;
-var chai = require('chai');
+const entityFactory = require('./helpers').entityFactory;
+const chai = require('chai');
 chai.use(require('chai-dom'));
-var expect = chai.expect
+const expect = chai.expect
 
 suite('controller-event-handler component', function () {
   let component;
@@ -51,7 +51,7 @@ suite('controller-event-handler component', function () {
       el.setAttribute('position', "0.5 1.5 0");
       el.emit('animationcomplete');
       expect(el.id).to.equal('31');
-    })
+    });
 
     test('on animationcomplete: emits checkForMatch event', function () {
       let testResult = false;

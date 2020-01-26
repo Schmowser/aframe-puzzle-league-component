@@ -4,8 +4,8 @@ require('../index.js');
 var entityFactory = require('./helpers').entityFactory;
 
 suite('puzzle-league component', function () {
-  var component;
-  var el;
+  let component;
+  let el;
 
   setup(function (done) {
     el = entityFactory();

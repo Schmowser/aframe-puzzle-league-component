@@ -5,13 +5,15 @@ AFRAME.registerComponent('controller-event-handler', {
           const el = this.el;
 
           el.addEventListener('mouseenter', function () {
-//                el.setAttribute('material', 'color', '#24CAFF');
+              // el.setAttribute('material', 'wireframe', true); // TODO: Replace by custom shader
           });
           el.addEventListener('mouseleave', function () {
-//                el.setAttribute('material', 'color', '#EF2D5E');
+              // el.setAttribute('material', 'wireframe', false);
           });
           el.addEventListener('mousedown', function () {
-                el.setAttribute('swap-candidate');
+                if (isAnimationDisabled(el)) {
+                    el.setAttribute('swap-candidate');
+                }
           });
           el.addEventListener('mouseup', function () {
                 const swapCandidates = document.querySelectorAll("[swap-candidate]");
@@ -24,12 +26,27 @@ AFRAME.registerComponent('controller-event-handler', {
           });
           el.addEventListener('animationcomplete', function(event) {
                 const elPosition = el.object3D.position;
-                const idx = '' + (elPosition.x/0.5);
-                const idy = '' + (elPosition.y/0.5);
-                el.setAttribute('id', idy.concat(idx))
+                el.setAttribute('id', positionToIdMapper(elPosition));
 
                 el.emit('checkForMatch');
+                disableSwappingDuringAnimation(el);
           });
     }
 
 });
+
+function positionToIdMapper(position) {
+    const interSpace = 0.5;
+    const idx = '' + (position.x/interSpace);
+    const idy = '' + (position.y/interSpace);
+    return idy.concat(idx);
+}
+
+function disableSwappingDuringAnimation(el) {
+    el.removeAttribute('animation');
+}
+
+function isAnimationDisabled(el) {
+    const animation = el.getAttribute('animation');
+    return !animation;
+}
