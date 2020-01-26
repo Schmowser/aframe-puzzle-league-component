@@ -5,10 +5,10 @@ AFRAME.registerComponent('controller-event-handler', {
           const el = this.el;
 
           el.addEventListener('mouseenter', function () {
-              el.setAttribute('material', 'wireframe', true); // TODO: Replace by custom shader
+              // el.setAttribute('material', 'wireframe', true); // TODO: Replace by custom shader
           });
           el.addEventListener('mouseleave', function () {
-              el.setAttribute('material', 'wireframe', false);
+              // el.setAttribute('material', 'wireframe', false);
           });
           el.addEventListener('mousedown', function () {
                 if (isAnimationDisabled(el)) {
