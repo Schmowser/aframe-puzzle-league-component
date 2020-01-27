@@ -23,7 +23,6 @@
 
     <a-assets>
       <a-mixin id="cube"
-               mock-mouse
                controller-event-handler
                geometry="primitive: box; height: 0.30; width: 0.30; depth: 0.30"
                material="color: #EF2D5E;"></a-mixin>
@@ -45,8 +44,6 @@
     <a-entity id="right"
               oculus-touch-controls="hand: right"
               controller-cursor
-              animation="property: position; to: 0 1.5 1"
-              animation__2="property: rotation; to: 0 -45 0; loop: true; dir: alternate"
     ></a-entity>
 
     <!-- Ground -->
