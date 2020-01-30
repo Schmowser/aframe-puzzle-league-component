@@ -1,41 +1,57 @@
 AFRAME.registerComponent('grid', {
+    schema: {
+        width: {type: 'number', default: 6},
+        height: {type: 'number', default: 12}
+    },
 
     init: function () {
-        // TODO: Add code that initializes the child cubes inside the grid!
-
+        const data = this.data;
         const el = this.el;
+        const width = data.width;
+        const height = data.height;
+
+        // EVENT LISTENERS
         el.addEventListener('checkForMatch', function () {
 
-            // Check for all matches in each row
-            const rowNodesToBeRemoved = getMatchNodes(true);
+            const rowNodesToBeRemoved = getMatchNodes(true, width, height);
+            const colNodesToBeRemoved = getMatchNodes(false, width, height);
 
-            // Check for all matches in each column
-            const colNodesToBeRemoved = getMatchNodes(false);
-
-            // Remove all nodes
+            // TODO: Query for all invisibles and add them to nodeToBeRemoved
             let nodesToBeRemoved = new Set([...rowNodesToBeRemoved, ...colNodesToBeRemoved]);
             nodesToBeRemoved.forEach(node => node.parentNode.removeChild(node));
-            // nodesToBeRemoved.forEach(node => node.setAttribute('visible', false));
 
             applyGravityAfterBlockRemoval(nodesToBeRemoved);
 
+            // TODO: Fill grid with invisibles
         });
 
-        el.emit('checkForMatch');
+        // INITIALIZE
+        initGrid(el, width, height);
+
+        // EMIT EVENTS
+        setTimeout(() => {
+            el.emit('checkForMatch');
+        }, 200); // We have to wait a bit until all elements are flushed to the DOM
     },
 
 });
 
-function getMatchNodes(isRow) {
+function getMatchNodes(isRow, width, height) {
     let matchNodes = new Set();
     let tempNodes = new Set();
     let currentColor = null;
-    for (let i = 0; i < 5; i++) {
-        for (let j = 0; j < 5; j++) { // TODO: Generalize 5
+    for (let i = 0; i < height; i++) {
+        for (let j = 0; j < width; j++) {
             let id = isRow ? buildId(i, j) : buildId(j, i);
             const node = document.getElementById(id);
-            if (node != null) {
-                const nodeColor = node.getAttribute('material').color;
+            if (node) {
+                const material = node.getAttribute('material');
+                let nodeColor = null;
+                if (material) {
+                    nodeColor = material.color;
+                } else {
+                    continue // TODO: Check logic when a node does not have a color
+                }
 
                 if (node.getAttribute('visible') && nodeColor === currentColor) {
                     tempNodes.add(node);
@@ -57,13 +73,30 @@ function getMatchNodes(isRow) {
     return matchNodes;
 }
 
+function initGrid(grid, width, height) {
+    const colors = ['#EF2D5E', '#4CC3D9', '#FFC65D', '#34B51D'];
+
+    for (let i = 0; i < height; i++) {
+        for (let j = 0; j < width; j++) {
+            let cubeEl = document.createElement('a-entity');
+            cubeEl.setAttribute('mixin', 'cube');
+            let id = buildId(i, j);
+            cubeEl.setAttribute('id', id);
+            cubeEl.setAttribute('material', {color: colors[getRandomInt(colors.length)]});
+            let position = idToPositionMapper(id);
+            cubeEl.object3D.position.set(position.x, position.y, position.z);
+            grid.appendChild(cubeEl);
+        }
+    }
+}
+
 function buildId(i, j) {
     const iString = '' + i;
     const jString = '' + j;
     return iString + jString;
 }
 
-function applyGravityAfterBlockRemoval(nodesRemoved) {
+function applyGravityAfterBlockRemoval(nodesRemoved) { // FIXME: In some cases, blocks fall to many or to few drops
     let cubeNodes = document.querySelectorAll("[mixin='cube']");
     cubeNodes.forEach(block => {
         const row = block.id[0];
@@ -92,4 +125,8 @@ function idToPositionMapper(id) {
     position.y = id[0] * interSpace;
     position.z = 0;
     return position
+}
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
 }
