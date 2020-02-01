@@ -11,7 +11,7 @@ AFRAME.registerComponent('grid', {
         const height = data.height;
 
         // EVENT LISTENERS
-        el.addEventListener('checkForMatch', function () {
+        el.addEventListener('checkForMatch', function () { // FIXME: Gets called 4 times (each time animation ends)
 
             const rowNodesToBeRemoved = getMatchNodes(true, width, height);
             const colNodesToBeRemoved = getMatchNodes(false, width, height);
@@ -31,7 +31,7 @@ AFRAME.registerComponent('grid', {
         // EMIT EVENTS
         setTimeout(() => {
             el.emit('checkForMatch');
-        }, 200); // We have to wait a bit until all elements are flushed to the DOM
+        }, 200); // We have to wait a bit until all elements are flushed to the DOM, maybe use flushToDOM somewhere?
     },
 
 });
@@ -96,26 +96,28 @@ function buildId(i, j) {
     return iString + jString;
 }
 
-function applyGravityAfterBlockRemoval(nodesRemoved) { // FIXME: In some cases, blocks fall to many or to few drops
+function applyGravityAfterBlockRemoval(nodesRemoved) {
     let cubeNodes = document.querySelectorAll("[mixin='cube']");
-    cubeNodes.forEach(block => {
-        const row = block.id[0];
-        const col = block.id[1];
-        let drop = [...nodesRemoved]
-            .filter(node => node.id[1] === col)
-            .filter(node => node.id[0] < row)
-            .length;
-        if (drop) {
-            const targetPosition = idToPositionMapper(buildId(row - drop, col));
-            const fallDuration = 400 * Math.sqrt(drop);
-            block.setAttribute('animation', `
+    setTimeout(() => {
+        cubeNodes.forEach(block => {
+            const row = block.id[0];
+            const col = block.id[1];
+            let drop = [...nodesRemoved]
+                .filter(node => node.id[1] === col)
+                .filter(node => node.id[0] < row)
+                .length;
+            if (drop) {
+                const targetPosition = idToPositionMapper(buildId(row - drop, col));
+                const fallDuration = 800 * Math.sqrt(drop);
+                block.setAttribute('animation', `
                         property: position;
                         to: ${targetPosition.x} ${targetPosition.y} ${targetPosition.z};
                         easing: easeInSine;
                         dur: ${fallDuration};
                     `);
-        }
-    });
+            }
+        });
+    }, 100); // FIXME: Remove if calling checkForMatch 4-times is solved
 }
 
 function idToPositionMapper(id) {
