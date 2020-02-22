@@ -28,7 +28,7 @@ AFRAME.registerComponent('controller-event-handler', {
                 const elPosition = el.object3D.position;
                 el.setAttribute('id', positionToIdMapper(elPosition));
 
-                el.emit('checkForMatch');
+                el.emit('swappingcomplete', {id: positionToIdMapper(elPosition)});
                 disableSwappingDuringAnimation(el);
           });
     }

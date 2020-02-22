@@ -53,9 +53,9 @@ suite('controller-event-handler component', function () {
       expect(el.id).to.equal('31');
     });
 
-    test('on animationcomplete: emits checkForMatch event', function () {
+    test('on animationcomplete: emits swappingcomplete event', function () {
       let testResult = false;
-      el.addEventListener('checkForMatch', function (event) {
+      el.addEventListener('swappingcomplete', function (event) {
         testResult = true;
       });
       el.emit('animationcomplete');
