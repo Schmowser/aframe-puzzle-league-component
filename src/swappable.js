@@ -11,7 +11,7 @@ AFRAME.registerComponent('swappable', {
         const elPosition = el.object3D.position;
         const targetPosition = targetEl.object3D.position;
 
-        let promise1 = new Promise(
+        let elAnimationFinished = new Promise(
             function(resolve, reject) {
                 el.setAttribute('animation', `
                     property: position;
@@ -23,7 +23,7 @@ AFRAME.registerComponent('swappable', {
             }
         );
 
-        let promise2 = new Promise(
+        let targetAnimationFinished = new Promise(
             function(resolve, reject) {
                 targetEl.setAttribute('animation', `
                     property: position;
@@ -35,7 +35,7 @@ AFRAME.registerComponent('swappable', {
             }
         );
 
-        Promise.all([promise1, promise2])
+        Promise.all([elAnimationFinished, targetAnimationFinished])
             .then(() => el.emit('checkForMatch', {id: 'swap'}));
 
     }

@@ -1,7 +1,8 @@
 AFRAME.registerComponent('grid', {
     schema: {
         width: {type: 'number', default: 6},
-        height: {type: 'number', default: 12}
+        height: {type: 'number', default: 12},
+        randomFill: {type: 'boolean', default: false}
     },
 
     init: function () {
@@ -26,7 +27,9 @@ AFRAME.registerComponent('grid', {
         });
 
         // INITIALIZE
-        initGrid(el, width, height);
+        if (data.randomFill) {
+            initGrid(el, width, height);
+        }
 
         // EMIT EVENTS
         setTimeout(() => {
@@ -119,7 +122,7 @@ function applyGravityAfterBlockRemoval(nodesRemoved, el) {
         if (drop) {
             const targetId = buildId(row - drop, col);
             const targetPosition = idToPositionMapper(targetId);
-            const fallDuration = 5000 * Math.sqrt(drop);
+            const fallDuration = 800 * Math.sqrt(drop);
             let promise = new Promise(
                 function(resolve, reject) {
                     block.setAttribute('animation', `
@@ -148,6 +151,7 @@ function applyGravityAfterBlockRemoval(nodesRemoved, el) {
     }
 }
 
+// TODO: Extract into helper class: require('./helpers').idToPositionMapper or similar;
 function idToPositionMapper(id) {
     const interSpace = 0.5;
     let position = {};
