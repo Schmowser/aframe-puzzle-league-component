@@ -1,7 +1,8 @@
 AFRAME.registerComponent('grid', {
     schema: {
         width: {type: 'number', default: 6},
-        height: {type: 'number', default: 12}
+        height: {type: 'number', default: 12},
+        randomFill: {type: 'boolean', default: false}
     },
 
     init: function () {
@@ -11,7 +12,7 @@ AFRAME.registerComponent('grid', {
         const height = data.height;
 
         // EVENT LISTENERS
-        el.addEventListener('checkForMatch', function () { // FIXME: Gets called 4 times (each time animation ends)
+        el.addEventListener('checkForMatch', function (event) {
 
             const rowNodesToBeRemoved = getMatchNodes(true, width, height);
             const colNodesToBeRemoved = getMatchNodes(false, width, height);
@@ -20,17 +21,19 @@ AFRAME.registerComponent('grid', {
             let nodesToBeRemoved = new Set([...rowNodesToBeRemoved, ...colNodesToBeRemoved]);
             nodesToBeRemoved.forEach(node => node.parentNode.removeChild(node));
 
-            applyGravityAfterBlockRemoval(nodesToBeRemoved);
+            applyGravityAfterBlockRemoval(nodesToBeRemoved, el);
 
             // TODO: Fill grid with invisibles
         });
 
         // INITIALIZE
-        initGrid(el, width, height);
+        if (data.randomFill) {
+            initGrid(el, width, height);
+        }
 
         // EMIT EVENTS
         setTimeout(() => {
-            el.emit('checkForMatch');
+            el.emit('checkForMatch', {id: 'init'});
         }, 200); // We have to wait a bit until all elements are flushed to the DOM, maybe use flushToDOM somewhere?
     },
 
@@ -96,30 +99,59 @@ function buildId(i, j) {
     return iString + jString;
 }
 
-function applyGravityAfterBlockRemoval(nodesRemoved) {
+function getListener(targetId, block, resolve) {
+    return function (event) {
+        if (event.detail.id === targetId) {
+            block.removeEventListener('swappingcomplete', getListener, false);
+            resolve();
+        }
+    };
+}
+
+function applyGravityAfterBlockRemoval(nodesRemoved, el) {
     let cubeNodes = document.querySelectorAll("[mixin='cube']");
-    setTimeout(() => {
-        cubeNodes.forEach(block => {
-            const row = block.id[0];
-            const col = block.id[1];
-            let drop = [...nodesRemoved]
-                .filter(node => node.id[1] === col)
-                .filter(node => node.id[0] < row)
-                .length;
-            if (drop) {
-                const targetPosition = idToPositionMapper(buildId(row - drop, col));
-                const fallDuration = 800 * Math.sqrt(drop);
-                block.setAttribute('animation', `
+    var promiseMap = {};
+
+    cubeNodes.forEach(block => {
+        const row = block.id[0];
+        const col = block.id[1];
+        let drop = [...nodesRemoved]
+            .filter(node => node.id[1] === col)
+            .filter(node => node.id[0] < row)
+            .length;
+        if (drop) {
+            const targetId = buildId(row - drop, col);
+            const targetPosition = idToPositionMapper(targetId);
+            const fallDuration = 800 * Math.sqrt(drop);
+            let promise = new Promise(
+                function(resolve, reject) {
+                    block.setAttribute('animation', `
                         property: position;
                         to: ${targetPosition.x} ${targetPosition.y} ${targetPosition.z};
                         easing: easeInSine;
                         dur: ${fallDuration};
-                    `);
+                        `);
+                    block.addEventListener('swappingcomplete', getListener(targetId, block, resolve));
+                }
+            );
+            if (drop in promiseMap) {
+                promiseMap[drop].push(promise);
+            } else {
+                promiseMap[drop] = [ promise ];
             }
-        });
-    }, 100); // FIXME: Remove if calling checkForMatch 4-times is solved
+
+        }
+    });
+
+    for (let key in promiseMap) {
+        if (promiseMap.hasOwnProperty(key)) {
+            Promise.all(promiseMap[key])
+                .then(() => el.emit('checkForMatch', {id: 'gravity'}));
+        }
+    }
 }
 
+// TODO: Extract into helper class: require('./helpers').idToPositionMapper or similar;
 function idToPositionMapper(id) {
     const interSpace = 0.5;
     let position = {};
