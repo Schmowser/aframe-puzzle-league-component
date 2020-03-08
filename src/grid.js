@@ -1,7 +1,7 @@
 AFRAME.registerComponent('grid', {
     schema: {
         width: {type: 'number', default: 6},
-        height: {type: 'number', default: 12},
+        height: {type: 'number', default: 12}, // TODO: max height is 10
         randomFill: {type: 'boolean', default: false}
     },
 
@@ -13,7 +13,7 @@ AFRAME.registerComponent('grid', {
 
         // EVENT LISTENERS
         el.addEventListener('checkForMatch', function (event) {
-
+            console.log('checkForMatch Called!');
             const rowNodesToBeRemoved = getMatchNodes(true, width, height);
             const colNodesToBeRemoved = getMatchNodes(false, width, height);
 
@@ -25,6 +25,40 @@ AFRAME.registerComponent('grid', {
 
             // TODO: Fill grid with invisibles
         });
+
+//        el.addEventListener('newblockline', function (event) {
+//        console.log('Received newblockline event')
+//            let cubeNodes = document.querySelectorAll("[mixin='cube']");
+//            var promiseArray = [];
+//
+//            cubeNodes.forEach(block => {
+//                const row = block.id[0];
+//                const col = block.id[1];
+//                const targetId = buildId(row + 1, col);
+//                const targetPosition = idToPositionMapper(targetId);
+//                let promise = new Promise(
+//                    function(resolve, reject) {
+//                        block.setAttribute('animation', `
+//                            property: position;
+//                            to: ${targetPosition.x} ${targetPosition.y} ${targetPosition.z};
+//                            easing: easeInSine;
+//                            dur: 300;
+//                        `);
+//                        block.addEventListener('swappingcomplete', getListener(targetId, block, resolve));
+//                    }
+//                );
+//                promiseArray.push(promise);
+//
+//            });
+//
+//            console.log(promiseArray.length);
+//
+//            Promise.all(promiseArray)
+//                .then(() => {
+//                    initRow(grid, width, 0);
+//                    el.emit('checkForMatch', {id: 'newline'})
+//                });
+//        });
 
         // INITIALIZE
         if (data.randomFill) {
@@ -77,19 +111,23 @@ function getMatchNodes(isRow, width, height) {
 }
 
 function initGrid(grid, width, height) {
+    for (let i = 0; i < height; i++) {
+        initRow(grid, width, i);
+    }
+}
+
+function initRow(grid, width, i) {
     const colors = ['#EF2D5E', '#4CC3D9', '#FFC65D', '#34B51D'];
 
-    for (let i = 0; i < height; i++) {
-        for (let j = 0; j < width; j++) {
-            let cubeEl = document.createElement('a-entity');
-            cubeEl.setAttribute('mixin', 'cube');
-            let id = buildId(i, j);
-            cubeEl.setAttribute('id', id);
-            cubeEl.setAttribute('material', {color: colors[getRandomInt(colors.length)]});
-            let position = idToPositionMapper(id);
-            cubeEl.object3D.position.set(position.x, position.y, position.z);
-            grid.appendChild(cubeEl);
-        }
+    for (let j = 0; j < width; j++) {
+        let cubeEl = document.createElement('a-entity');
+        cubeEl.setAttribute('mixin', 'cube');
+        let id = buildId(i, j);
+        cubeEl.setAttribute('id', id);
+        cubeEl.setAttribute('material', {color: colors[getRandomInt(colors.length)]});
+        let position = idToPositionMapper(id);
+        cubeEl.object3D.position.set(position.x, position.y, position.z);
+        grid.appendChild(cubeEl);
     }
 }
 
@@ -130,7 +168,7 @@ function applyGravityAfterBlockRemoval(nodesRemoved, el) {
                         to: ${targetPosition.x} ${targetPosition.y} ${targetPosition.z};
                         easing: easeInSine;
                         dur: ${fallDuration};
-                        `);
+                    `);
                     block.addEventListener('swappingcomplete', getListener(targetId, block, resolve));
                 }
             );

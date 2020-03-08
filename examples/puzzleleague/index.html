@@ -10,6 +10,7 @@
     <script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
     <script src="https://unpkg.com/aframe-controller-cursor-component@0.2.3/dist/aframe-controller-cursor-component.min.js"></script>
     <script src="../../src/controller-event-handler.js"></script>
+    <script src="../../src/generic-listener.js"></script>
     <script src="../../src/swappable.js"></script>
     <script src="../../src/stimulated.js"></script>
     <script src="../../src/grid.js"></script>
@@ -38,13 +39,12 @@
 
     <!-- Hands -->
     <a-entity id="left"
-              oculus-touch-controls="hand: left"
-              controller-cursor
+              laser-controls="hand: left"
     ></a-entity>
     <a-entity id="right"
-              oculus-touch-controls="hand: right"
-              controller-cursor
+              laser-controls="hand: right"
     ></a-entity>
+    <a-entity generic-listener></a-entity>
 
     <!-- Ground -->
     <a-plane
