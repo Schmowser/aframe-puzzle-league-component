@@ -58,7 +58,7 @@
     "@babel/plugin-syntax-import-meta": "^7.2.1-26",
     "@babel/preset-env": "^7.7.7",
     "aframe": "*",
-    "ajv": "^5.0.0",
+    "ajv": "^6.12.3",
     "babel-loader": "^8.0.5",
     "babel-preset-minify": "^0.5.1",
     "browserify": "^16.5.0",
